@@ -5,7 +5,7 @@ const ModalButton2 = ({ onClose }) => {
     <div className="modal">
       <div className="modal-content">
         <span className="close" onClick={onClose}>&times;</span>
-        <p>Hola Maane</p>
+        <p>Hola </p>
       </div>
     </div>
   );
