@@ -1,19 +1,17 @@
-// ModalButton1.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ModalButton1 = ({ onClose }) => {
   const [descripcionData, setDescripcionData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(1); // Puedes ajustar la cantidad de elementos por página según tus necesidades
 
   useEffect(() => {
-    // Hacer la solicitud para obtener datos de la tabla "descripcion" cuando el componente se monta
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/descripcion');
-        console.log('Respuesta de la solicitud:', response);
         if (response.data.success) {
           setDescripcionData(response.data.data);
-          console.log('Datos de descripción:', response.data.data);
         } else {
           console.error('Error al obtener datos de la descripción:', response.data.error);
         }
@@ -23,14 +21,26 @@ const ModalButton1 = ({ onClose }) => {
     };
 
     fetchData();
-  }, []); // El segundo argumento [] asegura que useEffect se ejecute solo una vez al montar el componente
+  }, []);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = descripcionData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
 
   return (
     <div className="modal">
       <div className="modal-content">
         <span className="close" onClick={onClose}>&times;</span>
-        <p>Hola Maane</p>
-        {/* Mostrar datos en una tabla */}
+        <p>¡CUÉNTAME!</p>
+       
         <table>
           <thead>
             <tr>
@@ -39,7 +49,7 @@ const ModalButton1 = ({ onClose }) => {
             </tr>
           </thead>
           <tbody>
-            {descripcionData.map((item, index) => (
+            {currentItems.map((item, index) => (
               <tr key={index}>
                 <td>{item.texto}</td>
                 <td>{item.fecha}</td>
@@ -47,9 +57,15 @@ const ModalButton1 = ({ onClose }) => {
             ))}
           </tbody>
         </table>
+
+        <div className="pagination">
+          <button onClick={handlePrevPage} disabled={currentPage === 1}>Atrás</button>
+          <button onClick={handleNextPage} disabled={indexOfLastItem >= descripcionData.length}>Siguiente</button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default ModalButton1;
+

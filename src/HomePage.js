@@ -41,7 +41,7 @@ const HomePage = ({ onLogout }) => {
       </div>
       <nav className={`menu ${menuOpen ? 'open' : ''}`}>
         <ul>
-          <li>Que Paso Hoy?</li>
+          <li onClick={() => setShowModal1(true)}>Que Paso Hoy?</li>
           <li>Opción 2</li>
           <li>Opción 3</li>
           <li>Opción 4</li>
