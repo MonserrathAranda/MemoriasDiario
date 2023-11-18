@@ -18,9 +18,7 @@ const db = mysql.createConnection({
 
 db.connect();
 
-
-
-
+// Ruta para manejar la autenticación de usuarios
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
@@ -29,7 +27,7 @@ app.post('/login', (req, res) => {
     [username, password],
     (err, results) => {
       if (err) {
-        res.send({ error: err.message });
+        res.send({ success: false, error: err.message });
       } else {
         if (results.length > 0) {
           res.send({ success: true, message: 'Inicio de sesión exitoso' });
@@ -41,26 +39,34 @@ app.post('/login', (req, res) => {
   );
 });
 
-
-// ...
-
-// Nueva ruta para obtener datos de la tabla "descripcion"
+// Ruta para obtener datos de la tabla "descripcion"
 app.get('/descripcion', (req, res) => {
   db.query('SELECT * FROM descripcion', (err, results) => {
     if (err) {
-      res.send({ error: err.message });
+      res.send({ success: false, error: err.message });
     } else {
       res.send({ success: true, data: results });
     }
   });
 });
 
-// ...
+// Ruta para obtener datos de la tabla "imagen"
+app.get('/imagen', (req, res) => {
+  db.query('SELECT id, fecha, imagen FROM imagen', (err, results) => {
+    if (err) {
+      res.send({ success: false, error: err.message });
+    } else {
+      // Convertir BLOB a URL de imagen
+      const dataWithImageURL = results.map(item => ({
+        id: item.id,
+        fecha: item.fecha,
+        imagen: `data:image/jpeg;base64,${Buffer.from(item.imagen).toString('base64')}`,
+      }));
 
-
-
-
-
+      res.send({ success: true, data: dataWithImageURL });
+    }
+  });
+});
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en el puerto ${port}`);
