@@ -29,7 +29,7 @@ const ModalButton2 = ({ onClose }) => {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Id</th>
               <th>Fecha</th>
               <th>Imagen</th>
             </tr>
