@@ -43,9 +43,7 @@ app.post('/login', (req, res) => {
 
 
 
-// ...
 
-// Nueva ruta para obtener datos de la tabla "descripcion"
 app.get('/descripcion', (req, res) => {
   db.query('SELECT * FROM descripcion', (err, results) => {
     if (err) {
@@ -56,12 +54,24 @@ app.get('/descripcion', (req, res) => {
   });
 });
 
-// ...
 
+// Nueva ruta para insertar datos en la tabla "descripcion"
+app.post('/insertDescripcion', (req, res) => {
+  console.log('Request received:', req.body);
+  const { texto, fecha } = req.body;
 
-
-
-
+  db.query(
+    'INSERT INTO descripcion (texto, fecha) VALUES (?, ?)',
+    [texto, fecha],
+    (err, results) => {
+      if (err) {
+        res.send({ success: false, error: err.message });
+      } else {
+        res.send({ success: true, message: 'Datos insertados correctamente' });
+      }
+    }
+  );
+});
 
 
 app.listen(port, () => {

@@ -55,7 +55,26 @@ app.get('/descripcion', (req, res) => {
   });
 });
 
-// ...
+
+
+// Nueva ruta para insertar datos en la tabla "descripcion"
+app.post('/insertDescripcion', (req, res) => {
+  const { texto, fecha } = req.body;
+  console.log('Request received:', req.body);
+
+  db.query(
+    'INSERT INTO descripcion (texto, fecha) VALUES (?, ?)',
+    [texto, fecha],
+    (err, results) => {
+      if (err) {
+        res.send({ success: false, error: err.message });
+      } else {
+        res.send({ success: true, message: 'Datos insertados correctamente' });
+      }
+    }
+  );
+});
+
 
 
 
