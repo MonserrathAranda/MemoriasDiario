@@ -1,59 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import ImageInsertForm from './insertImagen';  
+import ImageGallery from './ImageGallery';
+import './button2.css';
 
 const ModalButton2 = ({ onClose }) => {
-  const [imagenes, setImagenes] = useState([]);
+  const [images, setImages] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/imagen');
-        if (response.data.success) {
-          setImagenes(response.data.data);
-        } else {
-          console.error('Error al obtener datos de la imagen:', response.data.error);
-        }
-      } catch (error) {
-        console.error('Error en la solicitud:', error.message);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/imagen');
+      if (response.data.success) {
+        setImages(response.data.data);
+      } else {
+        console.error('Error al obtener datos de la imagen:', response.data.error);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error.message);
+    }
+  };
+
+  const handleImageClick = (imageId) => {
+    console.log('Hiciste clic en la imagen con ID:', imageId);
+    
+  };
+
+  const handleImageInsert = () => {
+    // Lógica para actualizar la lista de imágenes después de la inserción
+    fetchData();
+  };
 
   return (
     <div className="modal">
       <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
-        <p>Hola</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Fecha</th>
-              <th>Imagen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {imagenes.map((item, index) => (
-              <tr key={index}>
-                <td>{item.id}</td>
-                <td>{item.fecha}</td>
-                <td>
-                  {item.imagen ? (
-                    <img
-                      src={item.imagen}
-                      alt={`Imagen-${item.id}`}
-                      onError={(e) => console.error(`Error al cargar la imagen-${item.id}`, e)}
-                    />
-                  ) : (
-                    <span>No hay imagen</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <span className="close" onClick={onClose}>
+          &times;
+        </span>
+        <div className="image-container">
+          {/* Muestra ImageGallery aquí */}
+          <ImageGallery images={images} onClick={handleImageClick} />
+        </div>
+        <div className="insert-exit-buttons">
+          <ImageInsertForm onClose={onClose} onInsert={handleImageInsert} />
+        </div>
       </div>
     </div>
   );
