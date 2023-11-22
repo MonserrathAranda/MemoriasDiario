@@ -55,7 +55,6 @@ app.get('/descripcion', (req, res) => {
 });
 
 
-// Nueva ruta para insertar datos en la tabla "descripcion"
 app.post('/insertDescripcion', (req, res) => {
   console.log('Request received:', req.body);
   const { texto, fecha } = req.body;
@@ -73,6 +72,37 @@ app.post('/insertDescripcion', (req, res) => {
   );
 });
 
+
+
+//musica
+
+app.get('/musica', (req, res) => {
+  db.query('SELECT * FROM musica', (err, results) => {
+    if (err) {
+      res.send({ error: err.message });
+    } else {
+      res.send({ success: true, data: results });
+    }
+  });
+});
+
+
+app.post('/insertmusica', (req, res) => {
+  console.log('Request received:', req.body);
+  const { cancion } = req.body;
+
+  db.query(
+    'INSERT INTO musica (cancion) VALUES (?)',
+    [cancion],
+    (err, results) => {
+      if (err) {
+        res.send({ success: false, error: err.message });
+      } else {
+        res.send({ success: true, message: 'Datos insertados correctamente' });
+      }
+    }
+  );
+});
 //cambio de contra y user
 
 app.get('/getlogin', (req, res) => {
