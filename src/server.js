@@ -73,6 +73,37 @@ app.post('/insertDescripcion', (req, res) => {
   );
 });
 
+//cambio de contra y user
+
+app.get('/getlogin', (req, res) => {
+  db.query('SELECT * FROM login', (err, results) => {
+    if (err) {
+      res.send({ error: err.message });
+    } else {
+      res.send({ success: true, data: results });
+    }
+  });
+});
+
+app.post('/insertlogin', (req, res) => {
+  console.log('Request received:', req.body);
+  const { username, password } = req.body;
+
+  db.query(
+    'INSERT INTO login (username, password) VALUES (?, ?)',
+    [username, password],
+    (err, results) => {
+      if (err) {
+        res.send({ success: false, error: err.message });
+      } else {
+        res.send({ success: true, message: 'Datos insertados correctamente' });
+      }
+    }
+  );
+});
+
+
+
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en el puerto ${port}`);

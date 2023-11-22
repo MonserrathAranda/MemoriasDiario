@@ -3,6 +3,7 @@ import './App.css'; // Archivo de estilos CSS
 import ModalButton1 from './ModalButton1';
 import ModalButton2 from './ModalButton2';
 import ModalButton3 from './ModalButton3';
+import ModalButton4 from './ModalButton4';
 
 
 const HomePage = ({ onLogout }) => {
@@ -10,6 +11,7 @@ const HomePage = ({ onLogout }) => {
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
 
 
 
@@ -30,6 +32,7 @@ const HomePage = ({ onLogout }) => {
     {showModal1 && <ModalButton1 onClose={() => setShowModal1(false)} />}
     {showModal2 && <ModalButton2 onClose={() => setShowModal2(false)} />}
     {showModal3 && <ModalButton3 onClose={() => setShowModal3(false)} />}
+    {showModal4 && <ModalButton4 onClose={() => setShowModal4(false)} />}
 
     
 
@@ -45,7 +48,7 @@ const HomePage = ({ onLogout }) => {
           <li>Opción 2</li>
           <li>Opción 3</li>
           <li>Opción 4</li>
-          <li>Opción 5</li>
+          <li onClick={() => setShowModal4(true)}>Ajustes de privacidad</li>
           <li>
             <button onClick={onLogout}>Cerrar Sesión</button>
           </li>

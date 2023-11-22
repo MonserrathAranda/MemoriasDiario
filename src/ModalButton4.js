@@ -1,4 +1,3 @@
-
 //ModalButton1.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -6,12 +5,13 @@ import axios from 'axios';
 
 
 
-const ModalButton1 = ({ onClose }) => {
-  const [descripcionData, setDescripcionData] = useState([]);
+const ModalButton4 = ({ onClose }) => {
+  const [logiData, setlogiData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(3); 
-  const [newText, setNewText] = useState(''); // Add state for new text
-  const [newDate, setNewDate] = useState(''); // Add state for new date
+  const [itemsPerPage] = useState(2); 
+  const [newusername, setNewusername] = useState(''); // Add state for new text
+  const [newpassword, setNewpassword] = useState(''); // Add state for new date
+  
  
  
 
@@ -21,9 +21,9 @@ const ModalButton1 = ({ onClose }) => {
  
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/descripcion');
+        const response = await axios.get('http://localhost:5000/getlogin');
         if (response.data.success) {
-          setDescripcionData(response.data.data);
+          setlogiData(response.data.data);
         } else {
           console.error('Error al obtener datos de la descripción:', response.data.error);
         }
@@ -41,7 +41,7 @@ const ModalButton1 = ({ onClose }) => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = descripcionData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = logiData.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
@@ -54,23 +54,19 @@ const ModalButton1 = ({ onClose }) => {
  
   // Resto del código...
   
-
-
-  // Resto del código...
-  
-  const handleInsertData = async () => {
+  const handleInsertlogData = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/insertDescripcion', {
-        texto: newText,
-        fecha: newDate,
+      const response = await axios.post('http://localhost:5000/insertlogin', {
+        username: newusername,
+        password: newpassword,
       });
 
       if (response.data.success) {
         // Refresh data after insertion
         fetchData();
         // Clear input fields
-        setNewText('');
-        setNewDate('');
+        setNewusername('');
+        setNewpassword('');
       } else {
         console.error('Error al insertar datos:', response.data.error);
         console.log('Respuesta del servidor:', response);
@@ -81,21 +77,22 @@ const ModalButton1 = ({ onClose }) => {
     }
   };
 
+  
 
 
   return (
     <div className="modal">
       <div className="modal-content">
         <span className="close" onClick={onClose}>&times;</span>
-        <p>¡CUÉNTAME!</p>
-       
+        <p>AGREGA TU NUEVO USUARIO Y CONTRASEÑA</p>
+
         {/* Form for inserting data */}
         <div>
-          <label>Texto:</label>
-          <input type="text" value={newText} onChange={(e) => setNewText(e.target.value)} />
-          <label>Fecha:</label>
-          <input type="text" value={newDate} onChange={(e) => setNewDate(e.target.value)} />
-          <button onClick={handleInsertData}>Insertar Datos</button>
+          <label>USUARIO:</label>
+          <input type="text" value={newusername} onChange={(e) => setNewusername(e.target.value)} />
+          <label>CONTRASEÑA:</label>
+          <input type="text" value={newpassword} onChange={(e) => setNewpassword(e.target.value)} />
+          <button onClick={handleInsertlogData}>Insertar Datos</button>
         </div>
 
         {/* Display existing data */}
@@ -104,15 +101,15 @@ const ModalButton1 = ({ onClose }) => {
         <table>
           <thead>
             <tr>
-              <th>Texto</th>
-              <th>Fecha</th>
+              <th>username</th>
+              <th>password</th>
             </tr>
           </thead>
           <tbody>
             {currentItems.map((item, index) => (
               <tr key={index}>
-                <td>{item.texto}</td>
-                <td>{item.fecha}</td>
+                <td>{item.username}</td>
+                <td>{item.password}</td>
               </tr>
             ))}
           </tbody>
@@ -120,12 +117,12 @@ const ModalButton1 = ({ onClose }) => {
 
         <div className="pagination">
           <button onClick={handlePrevPage} disabled={currentPage === 1}>Atrás</button>
-          <button onClick={handleNextPage} disabled={indexOfLastItem >= descripcionData.length}>Siguiente</button>
+          <button onClick={handleNextPage} disabled={indexOfLastItem >= logiData.length}>Siguiente</button>
         </div>
       </div>
     </div>
   );
 };
 
-export default ModalButton1;
+export default ModalButton4;
 
