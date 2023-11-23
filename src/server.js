@@ -19,7 +19,7 @@ const db = mysql.createConnection({
 db.connect();
 
 
-
+//login
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
@@ -43,6 +43,7 @@ app.post('/login', (req, res) => {
 
 
 
+//descripcion
 
 app.get('/descripcion', (req, res) => {
   db.query('SELECT * FROM descripcion', (err, results) => {
@@ -70,6 +71,19 @@ app.post('/insertDescripcion', (req, res) => {
       }
     }
   );
+});
+
+
+app.delete('/descripcion/:id', (req, res) => {
+  const id = req.params.id;
+
+  db.query('DELETE FROM descripcion WHERE id = ?', [id], (err, results) => {
+    if (err) {
+      res.send({ success: false, error: err.message });
+    } else {
+      res.send({ success: true, message: 'Datos eliminados correctamente' });
+    }
+  });
 });
 
 
@@ -103,6 +117,21 @@ app.post('/insertmusica', (req, res) => {
     }
   );
 });
+
+
+app.delete('/musica/:id', (req, res) => {
+  const id = req.params.id;
+
+  db.query('DELETE FROM musica WHERE id = ?', [id], (err, results) => {
+    if (err) {
+      res.send({ success: false, error: err.message });
+    } else {
+      res.send({ success: true, message: 'Datos eliminados correctamente' });
+    }
+  });
+});
+
+
 //cambio de contra y user
 
 app.get('/getlogin', (req, res) => {

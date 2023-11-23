@@ -74,6 +74,19 @@ app.post('/insertDescripcion', (req, res) => {
 });
 
 
+app.delete('/descripcion/:id', (req, res) => {
+  const id = req.params.id;
+
+  db.query('DELETE FROM descripcion WHERE id = ?', [id], (err, results) => {
+    if (err) {
+      res.send({ success: false, error: err.message });
+    } else {
+      res.send({ success: true, message: 'Datos eliminados correctamente' });
+    }
+  });
+});
+
+
 //musica
 
 app.get('/musica', (req, res) => {
@@ -104,6 +117,21 @@ app.post('/insertmusica', (req, res) => {
   );
 });
 
+
+app.delete('/musica/:id', (req, res) => {
+  const id = req.params.id;
+
+  db.query('DELETE FROM musica WHERE id = ?', [id], (err, results) => {
+    if (err) {
+      res.send({ success: false, error: err.message });
+    } else {
+      res.send({ success: true, message: 'Datos eliminados correctamente' });
+    }
+  });
+});
+
+
+
 //cambio de contra y user
 
 app.get('/getlogin', (req, res) => {
@@ -133,7 +161,17 @@ app.post('/insertlogin', (req, res) => {
   );
 });
 
+app.delete('/login/:id', (req, res) => {
+  const id = req.params.id;
 
+  db.query('DELETE FROM login WHERE id = ?', [id], (err, results) => {
+    if (err) {
+      res.send({ success: false, error: err.message });
+    } else {
+      res.send({ success: true, message: 'Datos eliminados correctamente' });
+    }
+  });
+});
 
 
 app.listen(port, () => {

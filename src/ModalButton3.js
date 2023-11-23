@@ -75,6 +75,20 @@ const ModalButton3 = ({ onClose }) => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/musica/${id}`);
+      
+      if (response.data.success) {
+        // Refresh data after deletion
+        fetchData();
+      } else {
+        console.error('Error al eliminar datos:', response.data.error);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error.message);
+    }
+  };
 
 
   return (
@@ -105,6 +119,9 @@ const ModalButton3 = ({ onClose }) => {
             {currentItems.map((item, index) => (
               <tr key={index}>
                 <td>{item.cancion}</td>
+                <td>
+        <button onClick={() => handleDelete(item.id)}>Eliminar</button>
+      </td>
                
               </tr>
             ))}

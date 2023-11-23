@@ -77,6 +77,21 @@ const ModalButton4 = ({ onClose }) => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/login/${id}`);
+      
+      if (response.data.success) {
+        // Refresh data after deletion
+        fetchData();
+      } else {
+        console.error('Error al eliminar datos:', response.data.error);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error.message);
+    }
+  };
+
   
 
 
@@ -110,6 +125,9 @@ const ModalButton4 = ({ onClose }) => {
               <tr key={index}>
                 <td>{item.username}</td>
                 <td>{item.password}</td>
+                <td>
+        <button onClick={() => handleDelete(item.id)}>Eliminar</button>
+      </td>
               </tr>
             ))}
           </tbody>
