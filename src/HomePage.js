@@ -1,8 +1,10 @@
+//HomePage.js
 import React, { useState } from 'react';
 import './App.css'; // Archivo de estilos CSS
 import ModalButton1 from './ModalButton1';
 import ModalButton2 from './ModalButton2';
 import ModalButton3 from './ModalButton3';
+import ModalButton4 from './ModalButton4';
 
 
 const HomePage = ({ onLogout }) => {
@@ -10,6 +12,7 @@ const HomePage = ({ onLogout }) => {
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
 
 
 
@@ -19,17 +22,18 @@ const HomePage = ({ onLogout }) => {
 
 
 
-
+  
   return (
     <div>
     {/* Three dark purple buttons */}
     <button className="purple-button" onClick={() => setShowModal1(true)}>¿Que Pasó hoy?</button>
-    <button className="purple-button" onClick={() => setShowModal2(true)}>Button 2</button>
-    <button className="purple-button" onClick={() => setShowModal3(true)}>Button 3</button>
+    <button className="purple-button" onClick={() => setShowModal2(true)}>Pictures</button>
+    <button className="purple-button" onClick={() => setShowModal3(true)}>¿Que canción me hizo feliz hoy?</button>
 
     {showModal1 && <ModalButton1 onClose={() => setShowModal1(false)} />}
     {showModal2 && <ModalButton2 onClose={() => setShowModal2(false)} />}
     {showModal3 && <ModalButton3 onClose={() => setShowModal3(false)} />}
+    {showModal4 && <ModalButton4 onClose={() => setShowModal4(false)} />}
 
     
 
@@ -41,11 +45,11 @@ const HomePage = ({ onLogout }) => {
       </div>
       <nav className={`menu ${menuOpen ? 'open' : ''}`}>
         <ul>
-          <li>Que Paso Hoy?</li>
-          <li>Opción 2</li>
-          <li>Opción 3</li>
-          <li>Opción 4</li>
-          <li>Opción 5</li>
+          <li onClick={() => setShowModal1(true)}>Que Paso Hoy?</li>
+          <li onClick={() => setShowModal2(true)}>Pictures</li>
+        
+          <li onClick={() => setShowModal3(true)}>Mi canción</li>
+          <li onClick={() => setShowModal4(true)}>Ajustes de privacidad</li>
           <li>
             <button onClick={onLogout}>Cerrar Sesión</button>
           </li>
@@ -63,3 +67,4 @@ const HomePage = ({ onLogout }) => {
 };
 
 export default HomePage;
+

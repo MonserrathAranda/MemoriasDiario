@@ -20,6 +20,70 @@ const db = mysql.createConnection({
 
 db.connect();
 
+//login
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  db.query(
+    'SELECT * FROM login WHERE username = ? AND password = ?',
+    [username, password],
+    (err, results) => {
+      if (err) {
+        res.send({ error: err.message });
+      } else {
+        if (results.length > 0) {
+          res.send({ success: true, message: 'Inicio de sesión exitoso' });
+        } else {
+          res.send({ success: false, message: 'Credenciales incorrectas' });
+        }
+      }
+    }
+  );
+});
+
+//descripcion
+
+app.get('/descripcion', (req, res) => {
+  db.query('SELECT * FROM descripcion', (err, results) => {
+    if (err) {
+      res.send({ error: err.message });
+    } else {
+      res.send({ success: true, data: results });
+    }
+  });
+});
+
+
+app.post('/insertdescripcion', (req, res) => {
+  console.log('Request received:', req.body);
+  const { texto, fecha } = req.body;
+
+  db.query(
+    'INSERT INTO descripcion (texto, fecha) VALUES (?, ?)',
+    [texto, fecha],
+    (err, results) => {
+      if (err) {
+        res.send({ success: false, error: err.message });
+      } else {
+        res.send({ success: true, message: 'Datos insertados correctamente' });
+      }
+    }
+  );
+});
+
+app.delete('/descripcion/:id', (req, res) => {
+  const id = req.params.id;
+
+  db.query('DELETE FROM descripcion WHERE id = ?', [id], (err, results) => {
+    if (err) {
+      res.send({ success: false, error: err.message });
+    } else {
+      res.send({ success: true, message: 'Datos eliminados correctamente' });
+    }
+  });
+});
+
 // Ruta para obtener datos de la tabla "imagen" con enlaces a las imágenes
 app.get('/imagen', (req, res) => {
   db.query('SELECT id, fecha, imagen FROM imagen', (err, results) => {
@@ -82,32 +146,12 @@ app.delete('/imagen/:id', (req, res) => {
   });
 });
 
-// Ruta para manejar la autenticación de usuarios
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
+//musica
 
-  db.query(
-    'SELECT * FROM login WHERE username = ? AND password = ?',
-    [username, password],
-    (err, results) => {
-      if (err) {
-        res.send({ success: false, error: err.message });
-      } else {
-        if (results.length > 0) {
-          res.send({ success: true, message: 'Inicio de sesión exitoso' });
-        } else {
-          res.send({ success: false, message: 'Credenciales incorrectas' });
-        }
-      }
-    }
-  );
-});
-
-// Ruta para obtener datos de la tabla "descripcion"
-app.get('/descripcion', (req, res) => {
-  db.query('SELECT * FROM descripcion', (err, results) => {
+app.get('/musica', (req, res) => {
+  db.query('SELECT * FROM musica', (err, results) => {
     if (err) {
-      res.send({ success: false, error: err.message });
+      res.send({ error: err.message });
     } else {
       res.send({ success: true, data: results });
     }
@@ -115,7 +159,108 @@ app.get('/descripcion', (req, res) => {
 });
 
 
+app.post('/insertmusica', (req, res) => {
+  console.log('Request received:', req.body);
+  const { cancion } = req.body;
+
+  db.query(
+    'INSERT INTO musica (cancion) VALUES (?)',
+    [cancion],
+    (err, results) => {
+      if (err) {
+        res.send({ success: false, error: err.message });
+      } else {
+        res.send({ success: true, message: 'Datos insertados correctamente' });
+      }
+    }
+  );
+});
+
+app.delete('/musica/:id', (req, res) => {
+  const id = req.params.id;
+
+  db.query('DELETE FROM musica WHERE id = ?', [id], (err, results) => {
+    if (err) {
+      res.send({ success: false, error: err.message });
+    } else {
+      res.send({ success: true, message: 'Datos eliminados correctamente' });
+    }
+  });
+});
+
+
+//cambio de contra y user
+
+app.get('/getlogin', (req, res) => {
+  db.query('SELECT * FROM login', (err, results) => {
+    if (err) {
+      res.send({ error: err.message });
+    } else {
+      res.send({ success: true, data: results });
+    }
+  });
+});
+
+app.post('/insertlogin', (req, res) => {
+  console.log('Request received:', req.body);
+  const { username, password } = req.body;
+
+  db.query(
+    'INSERT INTO login (username, password) VALUES (?, ?)',
+    [username, password],
+    (err, results) => {
+      if (err) {
+        res.send({ success: false, error: err.message });
+      } else {
+        res.send({ success: true, message: 'Datos insertados correctamente' });
+      }
+    }
+  );
+});
+
+// Ruta para eliminar un usuario por ID
+app.delete('/login/:id', (req, res) => {
+  const id = req.params.id;
+  console.log('ID a eliminar:', id);
+
+  db.query('DELETE FROM login WHERE id = ?', [id], (err, results) => {
+    if (err) {
+      console.error('Error al eliminar usuario:', err);
+      res.send({ success: false, error: err.message });
+    } else {
+      console.log('Resultados de la eliminación:', results);
+      if (results.affectedRows > 0) {
+        res.send({ success: true, message: 'Usuario eliminado correctamente' });
+      } else {
+        res.send({ success: false, message: 'No se encontró el usuario para eliminar' });
+      }
+    }
+  });
+});
+
+app.delete('/login/:id', (req, res) => {
+  const id = req.params.id;
+  console.log('ID a eliminar:', id);
+
+  db.query('DELETE FROM login WHERE id = ?', [id], (err, results) => {
+    if (err) {
+      console.error('Error al eliminar usuario:', err);
+      res.status(500).json({ success: false, error: err.message });
+    } else {
+      console.log('Resultados de la eliminación:', results);
+      if (results.affectedRows > 0) {
+        res.json({ success: true, message: 'Usuario eliminado correctamente' });
+      } else {
+        res.status(404).json({ success: false, message: 'No se encontró el usuario para eliminar' });
+      }
+    }
+  });
+});
+
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en el puerto ${port}`);
 });
+
+
+
