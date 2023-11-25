@@ -1,0 +1,36 @@
+/* Estilos para el modal */
+.modal {
+    overflow: auto; /* Barras de desplazamiento si es necesario */
+  }
+  
+  /* Estilos para el párrafo dentro del modal */
+  .modal-content p {
+    margin: 0; /* Elimina el margen alrededor del párrafo */
+    line-height: 1; /* Ajusta la altura de línea del párrafo */
+    padding: 0; /* Elimina el relleno dentro del párrafo */
+    text-align: center; /* Centra el texto del párrafo */
+  }
+  
+  /* Estilos para la tabla dentro del modal */
+  .table-container table {
+    width: 100%; /* Ancho completo del contenedor */
+  }
+  
+  /* Estilos para las imágenes dentro de la tabla */
+  .table-container img {
+    max-width: 50px; /* Ancho máximo de las imágenes */
+    height: auto; /* Mantiene la proporción de aspecto de las imágenes */
+  }
+  
+  /* Estilos para el botón centrado */
+  .centered-button {
+    display: block; /* Hace que el botón sea un bloque para centrarlo */
+    margin: auto; /* Centra el botón horizontalmente en su contenedor */
+  }
+  
+  /* Estilos para imágenes pequeñas */
+  .small-image {
+    max-width: 20px; /* Ancho máximo de las imágenes pequeñas */
+    max-height: 20px; /* Altura máxima de las imágenes pequeñas */
+    cursor: pointer; /* Muestra el cursor como puntero */
+  }
